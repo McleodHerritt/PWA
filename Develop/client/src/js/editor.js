@@ -45,7 +45,7 @@ export default class Editor {
 
     // Save the content of the editor when the editor itself loses focus
     this.editor.on("blur", () => {
-      putDb(localStorage.getItem("content"));
+      putDb(this.editor.getValue());
     });
   }
 }
