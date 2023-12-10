@@ -1,8 +1,10 @@
 const butInstall = document.getElementById("buttonInstall");
 
-// Logic for installing the PWA
-// TODO: Add an event handler to the `beforeinstallprompt` event
+// let deferredPrompt;
+
 window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  console.log("The beforeinstallprompt event has been fired.");
   window.deferredPrompt = event;
   butInstall.classList.toggle("hidden", false);
 });
@@ -12,13 +14,14 @@ butInstall.addEventListener("click", async () => {
   const promptEvent = window.deferredPrompt;
 
   if (!promptEvent) {
+    console.log("The deferred prompt is not available.");
     return;
   }
 
-  // Show prompt
+  console.log("The deferred prompt is available.");
+
   promptEvent.prompt();
 
-  // Reset the deferred prompt variable, it can only be used once.
   window.deferredPrompt = null;
 
   butInstall.classList.toggle("hidden", true);
@@ -26,5 +29,15 @@ butInstall.addEventListener("click", async () => {
 
 // TODO: Add an handler for the `appinstalled` event
 window.addEventListener("appinstalled", (event) => {
+  console.log(
+    "The appinstalled event has been fired. The PWA was installed.",
+    event
+  );
   window.deferredPrompt = null;
 });
+
+if (window.matchMedia("(display-mode: standalone)").matches) {
+  console.log("This is running as a standalone PWA.");
+} else {
+  console.log("This is not running as a standalone PWA.");
+}
